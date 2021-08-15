@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-pinhole}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?set DATABASE_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  web:
+    build:
+      context: .
+      target: app
+    image: pinhole-app
+    command: sh -c "bin/rails db:prepare && bin/rails server -b 0.0.0.0"
+    environment: &app_env
+      DATABASE_HOST: db
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-pinhole}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?set SECRET_KEY_BASE in .env}
+      RAILS_FORCE_SSL: ${RAILS_FORCE_SSL:-false}
+      STORY_LIFETIME_MINUTES: ${STORY_LIFETIME_MINUTES:-1440}
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - uploads:/app/public/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/up"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  worker:
+    image: pinhole-app
+    command: bin/rails jobs:work
+    environment: *app_env
+    volumes:
+      - uploads:/app/public/uploads
+    depends_on:
+      web:
+        condition: service_healthy
+
+  test:
+    profiles: ["test"]
+    build:
+      context: .
+      target: test
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-pinhole}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  uploads:
