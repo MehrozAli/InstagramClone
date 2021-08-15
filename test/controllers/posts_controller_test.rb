@@ -40,4 +40,22 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to home_path
   end
+
+  test 'uploading a PNG creates a post' do
+    sign_in users(:carmen)
+
+    assert_difference -> { users(:carmen).posts.count }, 1 do
+      post posts_path, params: { post: { image: fixture_file_upload('tiny.png', 'image/png'), post_type: 'post' } }
+    end
+    assert_redirected_to home_path
+  end
+
+  test 'an HTML file renamed to .png is refused' do
+    sign_in users(:carmen)
+
+    assert_no_difference 'Post.count' do
+      post posts_path, params: { post: { image: fixture_file_upload('disguised.png', 'image/png') } }
+    end
+    assert_redirected_to new_post_path
+  end
 end
