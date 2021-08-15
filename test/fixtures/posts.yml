@@ -1,11 +1,23 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+alice_post:
+  user: alice
+  image: dunes.png
+  post_type: post
+  active: true
+  likes_count: 1
+  comments_count: 1
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+bruno_post:
+  user: bruno
+  image: harbour.png
+  post_type: post
+  active: true
+  likes_count: 0
+  comments_count: 0
+
+carmen_story:
+  user: carmen
+  image: market.png
+  post_type: story
+  active: true
+  likes_count: 0
+  comments_count: 0
