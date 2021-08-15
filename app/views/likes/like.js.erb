@@ -1,0 +1,7 @@
+<% if @success %>
+  $(".like-<%= @post_id %>").addClass("fas text-danger").removeClass("far");
+<% else %>
+  $(".like-<%= @post_id %>").addClass("far").removeClass("fas text-danger");
+<% end %>
+
+$("#<%= @post_id %>-likes").text("<%= pluralize(@total_likes_count, 'like') %>");

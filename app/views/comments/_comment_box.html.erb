@@ -1,0 +1,19 @@
+<div class='comment-input comment-<%= post.id %>'>
+  <%= form_for [post, @comment], remote: true do |f| %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <div class="input-group">
+      <%= f.text_field :comment_body, placeholder: 'Enter comment...', class: 'form-control', required: true %>
+      <div class="input-group-append">
+        <%= f.submit 'Post', class: 'btn btn-outline-success btn-sm' %>
+      </div>
+    </div>
+
+    <% if @comment.errors.any? %>
+      <% @comment.errors.full_messages do |message| %>
+        <p class='text-danger m-0 f-12'>
+          <%= message %>
+        </p>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

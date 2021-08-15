@@ -1,0 +1,6 @@
+<%= form_for @post, html: { multipart: true } do |f| %>
+  <%= f.file_field :image, class: 'form-control mb-3', required: true, accept: '.png, .jpg, .jpeg' %>
+  <%= f.hidden_field :image_cache %>
+  <%= f.hidden_field :post_type, value: @post.post_type %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

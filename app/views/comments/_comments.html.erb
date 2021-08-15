@@ -1,0 +1,24 @@
+<% post.comments.each do |comment| %>
+  <div class='d-flex justify-content-between align-items-center my-1'>
+    <p class='m-0'>
+      <strong><%= link_to comment.user.username, profile_path(comment.user.username), class: 'text-dark' %>:</strong>
+      <span id='comment-<%= comment.id %>'>
+        <%= comment.comment_body %>
+      </span>
+      <br>
+      <span class='m-0 f-12 text-muted'>
+        <%= time_ago_in_words(comment.created_at) %> ago
+      </span>
+    </p>
+    <% if can_alter_comment?(comment) %>
+      <div class='comment-actions'>
+        <%= link_to post_comment_path(post.id, comment.id), method: :delete, remote: true do %>
+          <i class='fas fa-trash cursor-pointer f-12 text-dark'></i>
+        <% end %>
+        <%= link_to edit_post_comment_path(post.id, comment.id), method: :get, remote: true do %>
+          <i class='fas fa-edit cursor-pointer f-12 text-dark'></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

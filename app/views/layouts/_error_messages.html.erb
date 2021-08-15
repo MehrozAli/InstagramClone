@@ -1,0 +1,13 @@
+<% flash.each do |type, message| %>
+  <div class='flash-alerts alert <%= type == 'notice' ? 'alert-info' : 'alert-danger' %> mt-2'>
+    <%= message %>
+  </div>
+<% end %>
+
+<script>
+  $(function() {
+    setTimeout(() => {
+      $('.alert').fadeOut();
+    }, 3000)
+  })
+</script>

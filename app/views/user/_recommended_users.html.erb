@@ -1,0 +1,25 @@
+<% @recommended.each do |user| %>
+  <div class='row mb-2'>
+    <div class='col-3'>
+      <%= link_to image_tag(render_profile_picture(user.profileImg), size: '50x50', class: 'rounded-circle'), profile_path(user.username) %>
+    </div>
+
+    <div class='col-9 d-flex justify-content-between'>
+      <div>
+        <p class='m-0'>
+          <%= link_to user.full_name, profile_path(user.username), class: 'text-dark' %>
+        </p>
+        <p class='text-muted m-0'>
+          <%= user.username %>
+        </p>
+      </div>
+
+      <div>
+        <%= form_tag follow_user_path, method: :post do %>
+          <%= hidden_field_tag :follow_id, user.id %>
+          <%= submit_tag 'Follow', class: 'btn btn-info btn-sm' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

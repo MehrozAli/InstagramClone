@@ -1,0 +1,49 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ */
+
+@import 'bootstrap';
+@import 'public.scss';
+@import 'user.scss';
+@import 'posts.scss';
+@import 'comments.scss';
+
+.default-bg {
+  background-color: #fafafa;
+}
+
+.vh-90 {
+  min-height: 90vh;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.f-12 {
+  font-size: 12px;
+}
+
+.flash-alerts {
+  position: fixed;
+  left: 35%;
+  z-index: 100;
+}
+
+.box-shadow-none {
+  box-shadow: none !important;
+}

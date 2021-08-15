@@ -1,0 +1,52 @@
+# Bundler and installed dependency trees
+/.bundle
+/vendor/bundle
+node_modules/
+project_venv/
+/yarn-error.log
+yarn-debug.log*
+
+# Logs, temp files and runtime state
+/log/*
+!/log/.keep
+/tmp/*
+!/tmp/.keep
+/storage/*
+!/storage/.keep
+*.pid
+
+# User uploads (CarrierWave) and compiled assets
+/public/uploads/
+/public/assets/
+/public/packs/
+/public/packs-test/
+
+# Databases
+*.sqlite3
+*.sqlite3-journal
+*.db
+
+# Secrets
+.env
+.env.*
+!.env.example
+/config/master.key
+/config/credentials/*.key
+/config/credentials.yml.enc
+*.key
+*.pem
+
+# Test and coverage output
+/coverage/
+/test/reports/
+
+# Repository automation is not part of this project
+.github/
+
+# Editors and OS files
+.byebug_history
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

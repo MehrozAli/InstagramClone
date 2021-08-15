@@ -1,0 +1,33 @@
+<div class='my-3'>
+  <div class='text-left p-3 bg-white border d-flex align-items-center justify-content-between'>
+    <div>
+      <%= image_tag render_profile_picture(post.user.profileImg), size: '40x40', class: 'rounded-circle' %>
+      <%= link_to post.post_user, profile_path(post.user.username), class: 'text-dark' %>
+    </div>
+
+    <%= render 'posts/dropdown_menu', post: post if can_alter_post?(post.id) %>
+  </div>
+  <%= image_tag post.image_url, class: 'img img-fluid' %>
+  <div class='bg-white p-3 border text-left'>
+    <div class='post-actions'>
+      <i class='<%= post_already_liked_by_user?(post) ? 'fas text-danger' : 'far' %> fa-heart like-icon like-<%= post.id %>' data-id='<%= post.id %>'></i>
+      <%= link_to post_path(post.id), class: 'text-dark' do %>
+        <i class='far fa-comment'></i>
+      <% end %>
+    </div>
+    <p class='m-0'>
+      <strong id='<%= post.id %>-likes'>
+        <%= pluralize(post.likes_count, 'like') %>
+      </strong>
+    </p>
+    <p class='m-0 text-muted'>
+      <%= time_ago_in_words(post.created_at) %> ago
+    </p>
+
+    <div class='comments-box'>
+      <%= render 'comments/comments', post: post %>
+    </div>
+
+    <%= render 'comments/comment_box', post: post %>
+  </div>
+</div>

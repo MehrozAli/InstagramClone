@@ -1,0 +1,19 @@
+// Place all the styles related to the comments controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.comment-input {
+  margin-top: 10px;
+
+  input {
+    box-shadow: none !important;
+  }
+}
+
+.comments-box {
+  max-height: 200px;
+  overflow-y: auto;
+
+  .comments-action a {
+    text-decoration: none;
+  }
+}
