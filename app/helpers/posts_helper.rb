@@ -1,10 +1,10 @@
 module PostsHelper
+  # Uses the preloaded likes when the feed has included them.
   def post_already_liked_by_user?(post)
-    post.likes.find_by_user_id(current_user.id).present?
+    post.likes.any? { |like| like.user_id == current_user.id }
   end
 
-  def can_alter_post?(post_id)
-    current_post = Post.find(post_id)
-    user_signed_in? && current_user.id == current_post.user_id
+  def can_alter_post?(post)
+    user_signed_in? && policy(post).update?
   end
 end

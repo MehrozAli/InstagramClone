@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   post '/user/unfollow', to: 'user#unfollow_user', as: :unfollow_user
   get '/search-user', to: 'user#search', as: :search
   get '/story', to: 'posts#add_story'
-  delete '/story/:id/delete', to: 'posts#remove_story'
   devise_for :users
   resources :posts do
     post 'like', to: 'likes#like_post', as: :like, on: :member

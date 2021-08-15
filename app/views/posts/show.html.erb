@@ -13,7 +13,7 @@
           <%= link_to @post.post_user, profile_path(@post.user.username), class: 'text-dark' %>
         </div>
 
-        <%= render 'dropdown_menu', post: @post if can_alter_post?(@post.id) %>
+        <%= render 'dropdown_menu', post: @post if can_alter_post?(@post) %>
       </div>
 
       <div class='bg-white p-3 border text-left'>
@@ -32,7 +32,7 @@
           </p>
         <% end %>
 
-        <div class='comments-box'>
+        <div class='comments-box' id='comments-<%= @post.id %>'>
           <%= render 'comments/comments', post: @post %>
         </div>
 

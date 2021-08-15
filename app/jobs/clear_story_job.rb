@@ -1,8 +1,8 @@
+# Hides a story once its lifetime is over.
 class ClearStoryJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
-    puts args[0]
-    Post.find_by(id: args[0], post_type: 'story').update(active: false)
+  def perform(post_id)
+    Post.areStories.where(id: post_id).update_all(active: false, updated_at: Time.current)
   end
 end

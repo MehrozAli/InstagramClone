@@ -8,11 +8,22 @@ class Post < ApplicationRecord
 
   delegate :post_user, to: :user
 
-  validates :user, :image, presence: true
+  validates :image, presence: true
+  validates :post_type, inclusion: { in: %w[post story] }
 
   scope :active, -> { where active: true }
   scope :arePosts, -> { where post_type: 'post' }
   scope :areStories, -> { where post_type: 'story' }
+
+  # Stories disappear after this long. STORY_LIFETIME_MINUTES overrides the
+  # 24-hour default, which is handy for trying the feature out locally.
+  def self.story_lifetime
+    ENV.fetch('STORY_LIFETIME_MINUTES', 24 * 60).to_i.minutes
+  end
+
+  def story?
+    post_type == 'story'
+  end
 
   def image_url
     image.url

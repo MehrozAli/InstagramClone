@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+
   test 'a public post is visible to any signed-in user' do
     sign_in users(:bruno)
 
@@ -57,5 +59,23 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
       post posts_path, params: { post: { image: fixture_file_upload('disguised.png', 'image/png') } }
     end
     assert_redirected_to new_post_path
+  end
+
+  test 'a new story is scheduled to expire after the story lifetime' do
+    sign_in users(:carmen)
+
+    freeze_time do
+      assert_enqueued_with(job: ClearStoryJob, at: Post.story_lifetime.from_now) do
+        post posts_path, params: { post: { image: fixture_file_upload('tiny.png', 'image/png'), post_type: 'story' } }
+      end
+    end
+  end
+
+  test 'a regular post schedules nothing' do
+    sign_in users(:carmen)
+
+    assert_no_enqueued_jobs do
+      post posts_path, params: { post: { image: fixture_file_upload('tiny.png', 'image/png'), post_type: 'post' } }
+    end
   end
 end

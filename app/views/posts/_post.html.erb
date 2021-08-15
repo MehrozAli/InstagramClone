@@ -5,7 +5,7 @@
       <%= link_to post.post_user, profile_path(post.user.username), class: 'text-dark' %>
     </div>
 
-    <%= render 'posts/dropdown_menu', post: post if can_alter_post?(post.id) %>
+    <%= render 'posts/dropdown_menu', post: post if can_alter_post?(post) %>
   </div>
   <%= image_tag post.image_url, class: 'img img-fluid' %>
   <div class='bg-white p-3 border text-left'>
@@ -24,7 +24,7 @@
       <%= time_ago_in_words(post.created_at) %> ago
     </p>
 
-    <div class='comments-box'>
+    <div class='comments-box' id='comments-<%= post.id %>'>
       <%= render 'comments/comments', post: post %>
     </div>
 

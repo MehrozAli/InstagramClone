@@ -1,31 +1,37 @@
 class UserController < ApplicationController
+  SEARCH_LIMIT = 50
+  SUGGESTION_LIMIT = 5
+
   before_action :authenticate_user!
-  before_action :set_user, only: [:profile]
-  before_action :set_recommended_users, only: [:index]
 
   def index
-    @posts = Post.includes(:likes, :comments).where(user_id: @following_ids).arePosts.active
-    @stories = Post.where(user_id: @following_ids).areStories.active
+    visible_ids = current_user.outgoing_follows.pluck(:following_id) << current_user.id
+    @posts = Post.includes(:user, :likes, comments: :user).where(user_id: visible_ids).arePosts.active
+    @stories = Post.includes(:user).where(user_id: visible_ids).areStories.active
+    @recommended = User.where.not(id: visible_ids).order(:created_at).limit(SUGGESTION_LIMIT)
     @comment = Comment.new
   end
 
-  def profile; end
+  def profile
+    @user = User.find_by!(username: params[:username])
+    @user_posts = @user.posts.arePosts.active
+  end
 
   def follow_user
-    follower = Follower.new(follower_id: current_user.id, following_id: params[:follow_id])
-    if follower.save
-      redirect_to home_path, notice: 'Followed!'
+    follow = current_user.outgoing_follows.new(following_id: params[:follow_id])
+    if follow.save
+      redirect_back_or_to home_path, notice: 'Followed!'
     else
-      redirect_to home_path, alert: 'Something went wrong!'
+      redirect_back_or_to home_path, alert: "Could not follow: #{follow.errors.full_messages.to_sentence}"
     end
   end
 
   def unfollow_user
-    @follower = Follower.find_by(follower_id: current_user.id, following_id: params[:follow_id])
-    if @follower.destroy
-      redirect_to search_path, notice: 'Unfollowed!'
+    follow = current_user.outgoing_follows.find_by(following_id: params[:follow_id])
+    if follow&.destroy
+      redirect_back_or_to search_path, notice: 'Unfollowed!'
     else
-      redirect_to search_path, alert: 'Something went wrong'
+      redirect_back_or_to home_path, alert: 'You are not following that user.'
     end
   end
 
@@ -33,20 +39,9 @@ class UserController < ApplicationController
     if params[:search].blank?
       redirect_to home_path
     else
-      @results = User.where('username LIKE :name', name: "%#{params[:search]}%")
+      term = "%#{User.sanitize_sql_like(params[:search].strip)}%"
+      @results = User.where('username ILIKE :term OR first_name ILIKE :term OR last_name ILIKE :term', term: term)
+                     .order(:username).limit(SEARCH_LIMIT)
     end
-  end
-
-  private
-
-  def set_user
-    @user = User.find_by_username(params[:username])
-    @user_posts = @user.posts.arePosts.active
-  end
-
-  def set_recommended_users
-    @following_ids = Follower.where(follower_id: current_user.id).pluck(:following_id)
-    @following_ids << current_user.id
-    @recommended = User.where.not(id: @following_ids)
   end
 end

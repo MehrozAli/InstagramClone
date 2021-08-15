@@ -16,7 +16,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.new(post_params)
     if @post.save
-      ClearStoryJob.delay(run_at: 2.minutes.from_now).perform_later(@post.id) if @post.post_type == 'story'
+      ClearStoryJob.set(wait: Post.story_lifetime).perform_later(@post.id) if @post.story?
       redirect_to home_path, notice: 'Post Uploaded!'
     else
       redirect_to new_post_path, alert: 'Post could not be uploaded.'
@@ -27,7 +27,8 @@ class PostsController < ApplicationController
     if @post.update(params.require(:post).permit(:image, :image_cache))
       redirect_to @post, notice: 'Post updated!'
     else
-      render 'edit', alert: 'Could not update post'
+      flash.now[:alert] = 'Could not update post'
+      render 'edit', status: :unprocessable_content
     end
   end
 
