@@ -1,19 +1,15 @@
 class CommentPolicy < ApplicationPolicy
-  def edit?
-    comment_owner?
+  def create?
+    PostPolicy.new(user, record.post).show?
   end
 
+  # Only the author may change the wording of a comment.
   def update?
-    comment_owner?
+    owner?
   end
 
+  # The post owner may also remove comments left on their post.
   def destroy?
-    comment_owner?
-  end
-
-  private
-
-  def comment_owner?
     owner? || user.id == record.post_owner
   end
 end

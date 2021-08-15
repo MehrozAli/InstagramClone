@@ -14,8 +14,11 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:alert] = 'You are not authorized to perform this action.'
-    redirect_to(request.referrer || home_path)
+    if request.format.html? && !request.xhr?
+      redirect_back_or_to home_path, alert: 'You are not authorized to perform this action.'
+    else
+      head :forbidden
+    end
   end
 
   def render_not_found

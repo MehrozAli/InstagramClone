@@ -1,5 +1,9 @@
 module CommentsHelper
-  def can_alter_comment?(comment)
-    current_user.id == comment.user_id || current_user.id == comment.post_owner
+  def can_edit_comment?(comment)
+    policy(comment).update?
+  end
+
+  def can_delete_comment?(comment)
+    policy(comment).destroy?
   end
 end

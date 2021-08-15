@@ -1,6 +1,10 @@
 class PostPolicy < ApplicationPolicy
-  def edit?
-    owner?
+  def show?
+    owner? || !record.user.isPrivate || user.following?(record.user_id)
+  end
+
+  def like?
+    show?
   end
 
   def update?

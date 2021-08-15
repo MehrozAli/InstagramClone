@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   delete '/story/:id/delete', to: 'posts#remove_story'
   devise_for :users
   resources :posts do
-    get 'like', to: 'likes#like_post', as: :like, on: :member
+    post 'like', to: 'likes#like_post', as: :like, on: :member
     resources :comments, only: %i[create destroy edit update]
   end
   get '*path', to: 'public#render_404'

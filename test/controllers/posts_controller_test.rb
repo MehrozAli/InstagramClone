@@ -1,7 +1,43 @@
 require 'test_helper'
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'a public post is visible to any signed-in user' do
+    sign_in users(:bruno)
+
+    get post_path(posts(:alice_post))
+
+    assert_response :success
+  end
+
+  test 'a private account\'s post is hidden from non-followers' do
+    sign_in users(:alice)
+
+    get post_path(posts(:bruno_post))
+
+    assert_redirected_to home_path
+    assert_equal 'You are not authorized to perform this action.', flash[:alert]
+  end
+
+  test 'a follower can open a private account\'s post' do
+    Follower.create!(follower_id: users(:alice).id, following_id: users(:bruno).id)
+    sign_in users(:alice)
+
+    get post_path(posts(:bruno_post))
+
+    assert_response :success
+  end
+
+  test 'only the owner can delete a post' do
+    sign_in users(:carmen)
+
+    assert_no_difference 'Post.count' do
+      delete post_path(posts(:alice_post))
+    end
+
+    sign_in users(:alice)
+    assert_difference 'Post.count', -1 do
+      delete post_path(posts(:alice_post))
+    end
+    assert_redirected_to home_path
+  end
 end

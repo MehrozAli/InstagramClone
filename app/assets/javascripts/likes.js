@@ -4,7 +4,7 @@ $(function() {
 
     $.ajax({
       url: `/posts/${post_id}/like`,
-      method: "GET",
+      method: "POST",
     })
   })
 })

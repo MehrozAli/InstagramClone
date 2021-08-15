@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: %i[show edit update destroy]
-  before_action :authorize_post, except: %i[show create new add_story create_story]
+  before_action :authorize_post, only: %i[show edit update destroy]
 
   def show
     @comment = Comment.new
@@ -24,7 +24,7 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    if @post.update(params.require(:post).permit(:image, :image_cache))
       redirect_to @post, notice: 'Post updated!'
     else
       render 'edit', alert: 'Could not update post'

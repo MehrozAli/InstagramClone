@@ -17,4 +17,19 @@ class Post < ApplicationRecord
   def image_url
     image.url
   end
+
+  # Likes the post for +user+, or removes their like if it exists.
+  # Returns true when the post ends up liked.
+  def toggle_like_by(user)
+    like = likes.find_by(user: user)
+    if like
+      like.destroy!
+      reload
+      false
+    else
+      likes.create!(user: user)
+      reload
+      true
+    end
+  end
 end

@@ -1,18 +1,38 @@
 require 'test_helper'
 
 class CommentPolicyTest < ActiveSupport::TestCase
-  def test_scope
+  setup do
+    @comment = comments(:carmen_on_alice)
   end
 
-  def test_show
+  test 'the author can edit, update and delete their comment' do
+    policy = CommentPolicy.new(users(:carmen), @comment)
+
+    assert policy.edit?
+    assert policy.update?
+    assert policy.destroy?
   end
 
-  def test_create
+  test 'the post owner can delete a comment but not reword it' do
+    policy = CommentPolicy.new(users(:alice), @comment)
+
+    assert policy.destroy?
+    assert_not policy.update?
+    assert_not policy.edit?
   end
 
-  def test_update
+  test 'a bystander can do nothing to someone else\'s comment' do
+    policy = CommentPolicy.new(users(:bruno), @comment)
+
+    assert_not policy.update?
+    assert_not policy.destroy?
   end
 
-  def test_destroy
+  test 'commenting needs permission to see the post' do
+    hidden = Comment.new(post: posts(:bruno_post), user: users(:alice), comment_body: 'hi')
+    visible = Comment.new(post: posts(:alice_post), user: users(:bruno), comment_body: 'hi')
+
+    assert_not CommentPolicy.new(users(:alice), hidden).create?
+    assert CommentPolicy.new(users(:bruno), visible).create?
   end
 end
