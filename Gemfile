@@ -1,39 +1,25 @@
 source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.2'
+ruby file: '.ruby-version'
 
-gem 'bootsnap', '>= 1.1.0', require: false
-gem 'bootstrap', '~> 4.0.0'
-gem 'carrierwave', '~> 2.0'
-gem 'coffee-rails', '~> 4.2'
-gem 'delayed_job_active_record'
+gem 'bootsnap', require: false
+gem 'bootstrap', '~> 4.6.2'
+gem 'carrierwave', '~> 3.1'
+gem 'delayed_job_active_record', '~> 4.1'
 gem 'devise'
-gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
-gem 'mini_magick', '~> 4.8'
-gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 3.11'
-gem 'pundit'
-gem 'rails', '~> 5.2.6'
-gem 'sass-rails', '~> 5.0'
-gem 'turbolinks', '~> 5'
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-gem 'uglifier', '>= 1.3.0'
+gem 'pg', '~> 1.6'
+gem 'puma', '>= 6.0'
+gem 'pundit', '~> 2.5'
+gem 'rails', '~> 8.1.1'
+gem 'sassc-rails'
+gem 'sprockets-rails'
+gem 'tzinfo-data', platforms: %i[windows jruby]
 
 group :development, :test do
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'web-console', '>= 3.3.0'
-end
-
-group :test do
-  gem 'capybara', '>= 2.15'
-  gem 'chromedriver-helper'
-  gem 'selenium-webdriver'
+  gem 'web-console'
 end
