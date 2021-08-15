@@ -1,0 +1,18 @@
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - bin/**/*
+    - vendor/**/*
+    - tmp/**/*
+    - node_modules/**/*
+
+# The project has always used single-quoted strings.
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# ...and no spaces inside array brackets.
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
