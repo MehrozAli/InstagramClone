@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'public#home'
+  get 'up', to: 'rails/health#show', as: :rails_health_check
   get '/home', to: 'user#index'
   get '/profile/:username', to: 'user#profile', as: :profile
   post '/user/follow', to: 'user#follow_user', as: :follow_user
