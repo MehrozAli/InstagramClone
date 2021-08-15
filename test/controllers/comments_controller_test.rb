@@ -20,6 +20,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
                                        params: { comment: { comment_body: 'Nice', user_id: users(:carmen).id } }
     end
     assert_response :success
+    assert_match '2 notes', response.body
     assert_equal users(:bruno), Comment.order(:id).last.user
   end
 
@@ -49,6 +50,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     patch post_comment_path(@post, comment), xhr: true, params: { comment: { comment_body: 'Even better up close' } }
 
     assert_response :success
+    assert_match 'Even better up close', response.body
     assert_equal 'Even better up close', comment.reload.comment_body
   end
 

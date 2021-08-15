@@ -1,43 +1,30 @@
-<div class='container'>
-  <div class='alert-box'>
-
+<% content_for :title, "Photo by #{@post.post_user}" %>
+<div class="alert-box" aria-live="polite"></div>
+<article class="post-detail">
+  <div class="post-detail-photo">
+    <%= image_tag @post.image_url, alt: "#{@post.story? ? 'Story' : 'Photo'} by #{@post.post_user}" %>
   </div>
-  <div class='row my-3'>
-    <div class='col-8'>
-      <%= image_tag @post.image_url, class: 'img img-fluid' %>
+
+  <div class="post-detail-side">
+    <header class="print-head">
+      <%= link_to profile_path(@post.user.username), class: 'person-link' do %>
+        <%= image_tag render_profile_picture(@post.user.profileImg), size: '40x40', class: 'avatar', alt: '' %>
+        <span class="person-name"><%= @post.post_user %></span>
+      <% end %>
+      <%= render 'owner_actions', post: @post if can_alter_post?(@post) %>
+    </header>
+
+    <% if @post.story? %>
+      <p class="tag">Story · fades <%= distance_of_time_in_words(Time.current, @post.created_at + Post.story_lifetime) %> from now</p>
+    <% else %>
+      <%= render 'actions', post: @post %>
+    <% end %>
+    <p class="muted small"><time datetime="<%= @post.created_at.iso8601 %>"><%= time_ago_in_words(@post.created_at) %> ago</time></p>
+
+    <h2 class="section-title">Notes</h2>
+    <div class="comments-box" id="comments-<%= @post.id %>">
+      <%= render 'comments/comments', post: @post %>
     </div>
-    <div class='col-4'>
-      <div class='text-left p-3 bg-white border d-flex align-items-center justify-content-between'>
-        <div>
-          <%= image_tag render_profile_picture(@post.user.profileImg), size: '40x40', class: 'rounded-circle' %>
-          <%= link_to @post.post_user, profile_path(@post.user.username), class: 'text-dark' %>
-        </div>
-
-        <%= render 'dropdown_menu', post: @post if can_alter_post?(@post) %>
-      </div>
-
-      <div class='bg-white p-3 border text-left'>
-        <% if @post.post_type == 'post' %>
-          <div class='post-actions'>
-            <i class='<%= post_already_liked_by_user?(@post) ? 'fas text-danger' : 'far' %> fa-heart like-icon like-<%= @post.id %>' data-id='<%= @post.id %>'></i>
-            <i class='far fa-comment' id='post-comment-icon'></i>
-          </div>
-          <p class='m-0'>
-            <strong id='<%= @post.id %>-likes'>
-              <%= pluralize(@post.likes_count, 'like') %>
-            </strong>
-          </p>
-          <p class='m-0 text-muted'>
-            <%= time_ago_in_words(@post.created_at) %> ago
-          </p>
-        <% end %>
-
-        <div class='comments-box' id='comments-<%= @post.id %>'>
-          <%= render 'comments/comments', post: @post %>
-        </div>
-
-        <%= render 'comments/comment_box', post: @post %>
-      </div>
-    </div>
+    <%= render 'comments/comment_box', post: @post %>
   </div>
-</div>
+</article>

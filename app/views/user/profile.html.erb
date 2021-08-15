@@ -1,33 +1,46 @@
-<div class='container text-left pt-3'>
-  <div class='row'>
-    <div class='col-4'>
-      <%= image_tag render_profile_picture(@user.profileImg), class: 'profile-pic img-thumbnail' %>
+<% content_for :title, @user.full_name %>
+<section class="profile">
+  <header class="profile-head">
+    <%= image_tag render_profile_picture(@user.profileImg), class: 'avatar avatar-large', alt: "Profile picture of #{@user.full_name}" %>
+    <div class="profile-meta">
+      <h1><%= @user.full_name %></h1>
+      <p class="muted">@<%= @user.username %><%= ' · private account' if @user.isPrivate %></p>
+      <ul class="stats">
+        <li><strong><%= @user_posts.size %></strong> <%= 'photo'.pluralize(@user_posts.size) %></li>
+        <li><strong><%= @user.total_followers %></strong> <%= 'follower'.pluralize(@user.total_followers) %></li>
+        <li><strong><%= @user.total_following %></strong> following</li>
+      </ul>
+      <% if can_edit_profile?(@user.id) %>
+        <%= link_to 'Edit profile', edit_user_registration_path, class: 'button button-quiet button-small' %>
+      <% elsif current_user.following?(@user.id) %>
+        <%= button_to 'Unfollow', unfollow_user_path, params: { follow_id: @user.id }, class: 'button button-quiet button-small' %>
+      <% else %>
+        <%= button_to 'Follow', follow_user_path, params: { follow_id: @user.id }, class: 'button button-small' %>
+      <% end %>
     </div>
+  </header>
 
-    <div class='col-8 align-self-center'>
-      <h3 class='m-0'><%= @user.full_name %></h3>
-      <p class='m-0'><%= @user.username %></p>
-      <div class='d-flex'>
-        <p class='m-0'><%= @user.posts.count %> posts</p>
-        <p class='mb-0 mx-5'><%= pluralize(@user.total_followers, 'follower') %></p>
-        <p class='m-0'><%= pluralize(@user.total_following, 'following') %></p>
-      </div>
-      <%= link_to 'Edit Profile', edit_user_registration_path, class: 'btn btn-light border mt-1' if can_edit_profile?(@user.id) %>
+  <h2 class="section-title">Contact sheet</h2>
+  <% if private?(@user) %>
+    <div class="empty-state">
+      <h3>This account is private</h3>
+      <p>Follow <%= @user.first_name %> to see their photos.</p>
     </div>
-  </div>
-
-  <div class='posts-area'>
-    <h5>Posts:</h5>
-    <% if private?(@user) %>
-      <p>Follow this user to see his posts.</p>
-    <% else %>
-      <div class='row'>
-        <% @user_posts.each do |post| %>
-          <div class='col-12 col-sm-4 post-square'>
-            <%= link_to image_tag(post.image_url, class: 'img img-fluid cursor-pointer'), post_path(post.id) %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</div>
+  <% elsif @user_posts.empty? %>
+    <div class="empty-state">
+      <h3>No photos yet</h3>
+      <p><%= can_edit_profile?(@user.id) ? 'Your first photo will show up here.' : "#{@user.first_name} hasn't posted anything yet." %></p>
+    </div>
+  <% else %>
+    <ol class="contact-sheet">
+      <% @user_posts.each_with_index do |post, i| %>
+        <li>
+          <%= link_to post_path(post) do %>
+            <%= image_tag post.image_url, alt: "Photo #{i + 1} by #{@user.full_name}" %>
+            <span class="frame-no" aria-hidden="true"><%= format('%02d', i + 1) %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+</section>

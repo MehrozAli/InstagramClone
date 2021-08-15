@@ -1,18 +1,9 @@
-<div class='comment-input comment-<%= post.id %>'>
-  <%= form_for [post, @comment], remote: true do |f| %>
-    <div class="input-group">
-      <%= f.text_field :comment_body, placeholder: 'Enter comment...', class: 'form-control', required: true %>
-      <div class="input-group-append">
-        <%= f.submit 'Post', class: 'btn btn-outline-success btn-sm' %>
-      </div>
-    </div>
-
-    <% if @comment.errors.any? %>
-      <% @comment.errors.full_messages do |message| %>
-        <p class='text-danger m-0 f-12'>
-          <%= message %>
-        </p>
-      <% end %>
-    <% end %>
+<% comment = local_assigns.fetch(:comment) { Comment.new } %>
+<% field_id = comment.persisted? ? "comment-edit-#{comment.id}" : "comment-form-#{post.id}" %>
+<div class="comment-input comment-<%= post.id %>">
+  <%= form_with model: [post, comment], local: false, class: 'note-form' do |f| %>
+    <%= f.label :comment_body, comment.persisted? ? 'Edit note' : 'Add a note', for: field_id, class: 'visually-hidden' %>
+    <%= f.text_field :comment_body, id: field_id, placeholder: 'Add a note…', required: true, maxlength: 500, autocomplete: 'off' %>
+    <%= f.submit comment.persisted? ? 'Save' : 'Post', class: 'button button-small', data: { disable_with: '…' } %>
   <% end %>
 </div>

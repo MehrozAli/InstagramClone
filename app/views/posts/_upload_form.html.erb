@@ -1,6 +1,16 @@
-<%= form_for @post, html: { multipart: true } do |f| %>
-  <%= f.file_field :image, class: 'form-control mb-3', required: true, accept: '.png, .jpg, .jpeg' %>
+<%= form_with model: @post, html: { multipart: true, class: 'stack-form' } do |f| %>
+  <% if @post.errors.any? %>
+    <div class="form-errors" role="alert">
+      <% @post.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :image, 'Photo (PNG or JPEG, up to 10 MB)' %>
+    <%= f.file_field :image, required: true, accept: 'image/png,image/jpeg' %>
+  </div>
   <%= f.hidden_field :image_cache %>
   <%= f.hidden_field :post_type, value: @post.post_type %>
-  <%= f.submit class: 'btn btn-primary' %>
+  <%= f.submit submit_label, class: 'button', data: { disable_with: 'Uploading…' } %>
 <% end %>

@@ -1,6 +1,6 @@
 module UserHelper
   def render_profile_picture(image)
-    image.present? ? image.url : 'dummy_user.png'
+    image.present? ? image.url : 'default_avatar.svg'
   end
 
   def can_edit_profile?(profile_id)

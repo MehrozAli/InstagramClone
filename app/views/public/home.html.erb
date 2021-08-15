@@ -1,10 +1,16 @@
-<div class='public-container'>
-  <h2>InstagramClone</h2>
-  <p class='text-muted'>Please log in to continue.</p>
-  <div class="mb-3">
-    <%= link_to 'Log In', new_user_session_path, class: 'btn btn-primary' %>
+<section class="landing">
+  <div class="landing-copy">
+    <p class="eyebrow">A small photo-sharing app</p>
+    <h1>Post a print. Follow the people whose eye you trust.</h1>
+    <p class="lede">Pinhole keeps it simple: square photos, short notes underneath, stories that fade after a day, and private profiles that only followers can open.</p>
+    <div class="landing-actions">
+      <%= link_to 'Create an account', new_user_registration_path, class: 'button' %>
+      <%= link_to 'I already have one', new_user_session_path, class: 'button button-quiet' %>
+    </div>
   </div>
-  <span>
-    New here? <%= link_to 'Register', new_user_registration_path %>
-  </span>
-</div>
+  <div class="landing-sheet" aria-hidden="true">
+    <% 4.times do |i| %>
+      <div class="sheet-frame"><span>#<%= format('%02d', i + 1) %></span></div>
+    <% end %>
+  </div>
+</section>

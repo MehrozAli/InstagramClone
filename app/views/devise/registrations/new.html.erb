@@ -1,44 +1,47 @@
-<h2>Sign up</h2>
+<% content_for :title, 'Create account' %>
+<section class="narrow card">
+  <h1>Create your account</h1>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'stack-form' }) do |f| %>
+    <%= render 'devise/shared/error_messages', resource: resource %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <div class="field">
+      <%= f.label :username %>
+      <%= f.text_field :username, autofocus: true, required: true, maxlength: 20, autocomplete: 'username',
+                                  aria: { describedby: 'username-hint' } %>
+      <p class="hint" id="username-hint">Letters, numbers and underscores, up to 20 characters.</p>
+    </div>
 
-  <div class='field w-40 m-auto'>
-    <%= f.label :username %><br />
-    <%= f.text_field :username, autofocus: true, class: 'form-control' %>
-  </div>
+    <div class="field-row">
+      <div class="field">
+        <%= f.label :first_name %>
+        <%= f.text_field :first_name, required: true, maxlength: 20, autocomplete: 'given-name' %>
+      </div>
+      <div class="field">
+        <%= f.label :last_name %>
+        <%= f.text_field :last_name, maxlength: 20, autocomplete: 'family-name' %>
+      </div>
+    </div>
 
-  <div class='field w-40 m-auto'>
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name, class: 'form-control' %>
-  </div>
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email, required: true, autocomplete: 'email' %>
+    </div>
 
-  <div class='field w-40 m-auto'>
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name, class: 'form-control' %>
-  </div>
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.password_field :password, required: true, autocomplete: 'new-password', aria: { describedby: 'password-hint' } %>
+      <% if @minimum_password_length %>
+        <p class="hint" id="password-hint"><%= @minimum_password_length %> characters minimum.</p>
+      <% end %>
+    </div>
 
-  <div class='field w-40 m-auto'>
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autocomplete: "email", class: 'form-control' %>
-  </div>
+    <div class="field">
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, required: true, autocomplete: 'new-password' %>
+    </div>
 
-  <div class='field w-40 m-auto'>
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
-  </div>
+    <%= f.submit 'Create account', class: 'button' %>
+  <% end %>
 
-  <div class='field w-40 m-auto'>
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up", class: 'btn btn-primary mt-3' %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  <%= render 'devise/shared/links' %>
+</section>

@@ -1,0 +1,5 @@
+<div class="owner-actions">
+  <%= link_to 'Replace photo', edit_post_path(post), class: 'small' %>
+  <%= button_to 'Delete', post_path(post), method: :delete, class: 'link-button small danger',
+                                           data: { confirm: 'Delete this photo for good?' } %>
+</div>

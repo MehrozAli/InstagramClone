@@ -1,33 +1,23 @@
-<div class='my-3'>
-  <div class='text-left p-3 bg-white border d-flex align-items-center justify-content-between'>
-    <div>
-      <%= image_tag render_profile_picture(post.user.profileImg), size: '40x40', class: 'rounded-circle' %>
-      <%= link_to post.post_user, profile_path(post.user.username), class: 'text-dark' %>
-    </div>
+<article class="print" aria-labelledby="post-<%= post.id %>-author">
+  <header class="print-head">
+    <%= link_to profile_path(post.user.username), class: 'person-link', id: "post-#{post.id}-author" do %>
+      <%= image_tag render_profile_picture(post.user.profileImg), size: '36x36', class: 'avatar', alt: '' %>
+      <span class="person-name"><%= post.post_user %></span>
+    <% end %>
+    <%= render 'posts/owner_actions', post: post if can_alter_post?(post) %>
+  </header>
 
-    <%= render 'posts/dropdown_menu', post: post if can_alter_post?(post) %>
-  </div>
-  <%= image_tag post.image_url, class: 'img img-fluid' %>
-  <div class='bg-white p-3 border text-left'>
-    <div class='post-actions'>
-      <i class='<%= post_already_liked_by_user?(post) ? 'fas text-danger' : 'far' %> fa-heart like-icon like-<%= post.id %>' data-id='<%= post.id %>'></i>
-      <%= link_to post_path(post.id), class: 'text-dark' do %>
-        <i class='far fa-comment'></i>
-      <% end %>
-    </div>
-    <p class='m-0'>
-      <strong id='<%= post.id %>-likes'>
-        <%= pluralize(post.likes_count, 'like') %>
-      </strong>
-    </p>
-    <p class='m-0 text-muted'>
-      <%= time_ago_in_words(post.created_at) %> ago
-    </p>
+  <%= link_to post_path(post), class: 'print-photo' do %>
+    <%= image_tag post.image_url, alt: "Photo by #{post.post_user}", loading: 'lazy' %>
+  <% end %>
 
-    <div class='comments-box' id='comments-<%= post.id %>'>
+  <div class="print-body">
+    <%= render 'posts/actions', post: post %>
+    <p class="muted small"><time datetime="<%= post.created_at.iso8601 %>"><%= time_ago_in_words(post.created_at) %> ago</time></p>
+
+    <div class="comments-box" id="comments-<%= post.id %>">
       <%= render 'comments/comments', post: post %>
     </div>
-
     <%= render 'comments/comment_box', post: post %>
   </div>
-</div>
+</article>

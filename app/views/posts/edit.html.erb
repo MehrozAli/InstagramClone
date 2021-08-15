@@ -1,3 +1,5 @@
-<%= render 'layouts/error_messages' %>
-<h2>Edit you post</h2>
-<%= render 'upload_form' %>
+<% content_for :title, 'Replace photo' %>
+<section class="narrow card">
+  <h1>Replace this photo</h1>
+  <%= render 'upload_form', submit_label: 'Save' %>
+</section>

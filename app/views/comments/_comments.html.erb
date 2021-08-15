@@ -1,26 +1,24 @@
-<% post.comments.each do |comment| %>
-  <div class='d-flex justify-content-between align-items-center my-1'>
-    <p class='m-0'>
-      <strong><%= link_to comment.user.username, profile_path(comment.user.username), class: 'text-dark' %>:</strong>
-      <span id='comment-<%= comment.id %>'>
-        <%= comment.comment_body %>
-      </span>
-      <br>
-      <span class='m-0 f-12 text-muted'>
-        <%= time_ago_in_words(comment.created_at) %> ago
-      </span>
-    </p>
-    <% if can_delete_comment?(comment) %>
-      <div class='comment-actions'>
-        <%= link_to post_comment_path(post.id, comment.id), method: :delete, remote: true do %>
-          <i class='fas fa-trash cursor-pointer f-12 text-dark'></i>
-        <% end %>
-        <% if can_edit_comment?(comment) %>
-          <%= link_to edit_post_comment_path(post.id, comment.id), remote: true do %>
-            <i class='fas fa-edit cursor-pointer f-12 text-dark'></i>
+<% if post.comments.empty? %>
+  <p class="muted small">No notes yet.</p>
+<% else %>
+  <ul class="notes">
+    <% post.comments.each do |comment| %>
+      <li class="note">
+        <p>
+          <%= link_to comment.user.username, profile_path(comment.user.username), class: 'note-author' %>
+          <span id="comment-<%= comment.id %>"><%= comment.comment_body %></span>
+        </p>
+        <div class="note-meta">
+          <time datetime="<%= comment.created_at.iso8601 %>"><%= time_ago_in_words(comment.created_at) %> ago</time>
+          <% if can_edit_comment?(comment) %>
+            <%= link_to 'Edit', edit_post_comment_path(post, comment), remote: true, class: 'small' %>
           <% end %>
-        <% end %>
-      </div>
+          <% if can_delete_comment?(comment) %>
+            <%= button_to 'Delete', post_comment_path(post, comment), method: :delete, class: 'link-button small danger',
+                                                                     form: { 'data-remote': 'true' } %>
+          <% end %>
+        </div>
+      </li>
     <% end %>
-  </div>
+  </ul>
 <% end %>

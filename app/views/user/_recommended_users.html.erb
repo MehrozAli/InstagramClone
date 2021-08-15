@@ -1,25 +1,19 @@
-<% @recommended.each do |user| %>
-  <div class='row mb-2'>
-    <div class='col-3'>
-      <%= link_to image_tag(render_profile_picture(user.profileImg), size: '50x50', class: 'rounded-circle'), profile_path(user.username) %>
-    </div>
-
-    <div class='col-9 d-flex justify-content-between'>
-      <div>
-        <p class='m-0'>
-          <%= link_to user.full_name, profile_path(user.username), class: 'text-dark' %>
-        </p>
-        <p class='text-muted m-0'>
-          <%= user.username %>
-        </p>
-      </div>
-
-      <div>
-        <%= form_tag follow_user_path, method: :post do %>
-          <%= hidden_field_tag :follow_id, user.id %>
-          <%= submit_tag 'Follow', class: 'btn btn-info btn-sm' %>
+<% if @recommended.any? %>
+  <ul class="people">
+    <% @recommended.each do |user| %>
+      <li class="person">
+        <%= link_to profile_path(user.username), class: 'person-link' do %>
+          <%= image_tag render_profile_picture(user.profileImg), size: '40x40', class: 'avatar', alt: '' %>
+          <span>
+            <span class="person-name"><%= user.full_name %></span>
+            <span class="muted">@<%= user.username %></span>
+          </span>
         <% end %>
-      </div>
-    </div>
-  </div>
+        <%= button_to 'Follow', follow_user_path, params: { follow_id: user.id }, class: 'button button-small',
+                                                  aria: { label: "Follow #{user.full_name}" } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="muted">You already follow everyone here.</p>
 <% end %>

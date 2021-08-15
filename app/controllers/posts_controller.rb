@@ -3,9 +3,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
   before_action :authorize_post, only: %i[show edit update destroy]
 
-  def show
-    @comment = Comment.new
-  end
+  def show; end
 
   def new
     @post = Post.new

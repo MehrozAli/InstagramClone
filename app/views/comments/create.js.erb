@@ -1,3 +1,4 @@
 $("#comments-<%= @post.id %>").html("<%= j render 'comments', post: @post %>");
 $(".comment-<%= @post.id %> input[type=text]").val('');
 $(".alert-box").html("<%= j render 'layouts/error_messages' %>");
+$("#notes-count-<%= @post.id %>").text("<%= j pluralize(@post.reload.comments_count, 'note') %>");

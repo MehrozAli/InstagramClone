@@ -1,2 +1,7 @@
-<h2>Create new post here.</h2>
-<%= render 'upload_form' %>
+<% story = @post.story? %>
+<% content_for :title, story ? 'New story' : 'New photo' %>
+<section class="narrow card">
+  <h1><%= story ? 'Add a story' : 'Post a photo' %></h1>
+  <p class="muted"><%= story ? 'Stories show at the top of your followers\' feeds and fade after a day.' : 'Square crops look best on profiles.' %></p>
+  <%= render 'upload_form', submit_label: story ? 'Share story' : 'Post photo' %>
+</section>

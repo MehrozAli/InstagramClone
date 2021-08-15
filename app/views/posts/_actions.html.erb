@@ -1,0 +1,13 @@
+<% liked = post_already_liked_by_user?(post) %>
+<div class="print-actions">
+  <%= button_to like_post_path(post), form: { 'data-remote': 'true', class: 'like-form' },
+                                      class: 'like-button', id: "like-#{post.id}",
+                                      aria: { pressed: liked.to_s, label: 'Like' } do %>
+    <%= icon(:star) %>
+    <span class="like-count" id="like-count-<%= post.id %>"><%= pluralize(post.likes_count, 'like') %></span>
+  <% end %>
+  <%= link_to post_path(post, anchor: "comment-form-#{post.id}"), class: 'comment-link' do %>
+    <%= icon(:note) %>
+    <span id="notes-count-<%= post.id %>"><%= pluralize(post.comments_count, 'note') %></span>
+  <% end %>
+</div>

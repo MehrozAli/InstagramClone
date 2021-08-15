@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 ruby file: '.ruby-version'
 
 gem 'bootsnap', require: false
-gem 'bootstrap', '~> 4.6.2'
 gem 'carrierwave', '~> 3.1'
 gem 'delayed_job_active_record', '~> 4.1'
 gem 'devise'
@@ -12,7 +11,6 @@ gem 'pg', '~> 1.6'
 gem 'puma', '>= 6.0'
 gem 'pundit', '~> 2.5'
 gem 'rails', '~> 8.1.1'
-gem 'sassc-rails'
 gem 'sprockets-rails'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 

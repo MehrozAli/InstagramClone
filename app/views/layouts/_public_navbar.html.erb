@@ -1,3 +1,7 @@
-<nav class='navbar navbar-light bg-light'>
-  <%= link_to 'InstagramClone', root_path, class: 'navbar-brand ml-5' %>
-</nav>
+<header class="topbar">
+  <%= render 'layouts/brand' %>
+  <nav aria-label="Account" class="topbar-links">
+    <%= link_to 'Log in', new_user_session_path %>
+    <%= link_to 'Create account', new_user_registration_path, class: 'button button-small' %>
+  </nav>
+</header>

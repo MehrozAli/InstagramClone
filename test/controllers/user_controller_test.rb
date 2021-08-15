@@ -68,10 +68,10 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:bruno)
 
     get search_path, params: { search: 'ALICE' }
-    assert_select 'a', text: 'Alice Moreno'
+    assert_select '.person-name', text: 'Alice Moreno'
 
     get search_path, params: { search: 'Ilves' }
-    assert_select 'a', text: 'Carmen Ilves'
+    assert_select '.person-name', text: 'Carmen Ilves'
   end
 
   test 'search treats % and _ literally' do
@@ -80,6 +80,6 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     get search_path, params: { search: '%' }
 
     assert_response :success
-    assert_select 'a', text: 'Alice Moreno', count: 0
+    assert_select '.person-name', text: 'Alice Moreno', count: 0
   end
 end

@@ -1,30 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>InstagramClone</title>
+    <title><%= content_for?(:title) ? "#{yield(:title)} · Pinhole" : 'Pinhole' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Pinhole is a small photo-sharing app: post prints, follow friends, leave notes.">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <script src="https://kit.fontawesome.com/bf458aa6dd.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Karla:wght@400;600;700&display=swap">
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
   </head>
 
   <body>
-    <% if user_signed_in? %>
-      <%= render 'layouts/user_navbar' %>
-    <% else %>
-      <%= render 'layouts/public_navbar' %>
-    <% end %>
-
-    <div class='default-bg'>
-      <div class='container vh-90'>
-        <div class='row h-100'>
-          <div class='col-12 text-center'>
-            <%= yield %>
-          </div>
-        </div>
-      </div>
-    </div>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <%= render(user_signed_in? ? 'layouts/user_navbar' : 'layouts/public_navbar') %>
+    <%= render 'layouts/error_messages' %>
+    <main id="main" class="page">
+      <%= yield %>
+    </main>
   </body>
 </html>

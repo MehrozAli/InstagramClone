@@ -1,33 +1,30 @@
-<%= render 'layouts/error_messages' %>
-<div class='search-results container'>
-  <% @results.each do |result| %>
-    <div class='row text-left align-items-center my-3 border-bottom py-1'>
-      <div class='col-1'>
-        <%= image_tag render_profile_picture(result.profileImg), size: '60x60', class: 'rounded-circle' %>
-      </div>
-      <div class='col-8'>
-        <p class='m-0 font-weight-bold'>
-          <%= link_to result.full_name, profile_path(result.username), class: 'text-dark' %>
-        </p>
-        <p class='m-0 f-12 text-muted'>
-          <%= result.username %>
-        </p>
-      </div>
-      <div class='col-2'>
-        <% if current_user.following?(result.id) %>
-          <%= form_tag unfollow_user_path, method: :post do %>
-            <%= hidden_field_tag :follow_id, result.id %>
-            <%= submit_tag 'Unfollow', class: 'btn btn-outline btn-light btn-sm border' %>
-          <% end %>
-        <% elsif current_user.id == result.id %>
-          <%= button_tag 'You', class: 'btn btn-outline btn-sm btn-light disabled border', disabled: true %>
-        <% else %>
-          <%= form_tag follow_user_path, method: :post do %>
-            <%= hidden_field_tag :follow_id, result.id %>
-            <%= submit_tag 'Follow', class: 'btn btn-info btn-sm' %>
-          <% end %>
-        <% end %>
-      </div>
+<% content_for :title, 'Search' %>
+<section class="search-results">
+  <h1>People matching “<%= params[:search] %>”</h1>
+  <% if @results.empty? %>
+    <div class="empty-state">
+      <p>Nobody matches that. Try part of a username or a first name.</p>
     </div>
+  <% else %>
+    <ul class="people people-wide">
+      <% @results.each do |result| %>
+        <li class="person">
+          <%= link_to profile_path(result.username), class: 'person-link' do %>
+            <%= image_tag render_profile_picture(result.profileImg), size: '48x48', class: 'avatar', alt: '' %>
+            <span>
+              <span class="person-name"><%= result.full_name %></span>
+              <span class="muted">@<%= result.username %></span>
+            </span>
+          <% end %>
+          <% if current_user.id == result.id %>
+            <span class="tag">You</span>
+          <% elsif current_user.following?(result.id) %>
+            <%= button_to 'Unfollow', unfollow_user_path, params: { follow_id: result.id }, class: 'button button-quiet button-small' %>
+          <% else %>
+            <%= button_to 'Follow', follow_user_path, params: { follow_id: result.id }, class: 'button button-small' %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
   <% end %>
-</div>
+</section>

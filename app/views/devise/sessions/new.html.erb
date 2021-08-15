@@ -1,31 +1,26 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class='form-group w-40 m-auto'>
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
-    <% if flash.alert %>
-      <span class='text-danger text-left'>
-        <%= flash.alert %>
-      </span>
-    <% end %>
-  </div>
-
-  <div class='form-group w-40 m-auto'>
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password", class: 'form-control' %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class='form-group'>
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<% content_for :title, 'Log in' %>
+<section class="narrow card">
+  <h1>Welcome back</h1>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'stack-form' }) do |f| %>
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, autocomplete: 'email', required: true %>
     </div>
+
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.password_field :password, autocomplete: 'current-password', required: true %>
+    </div>
+
+    <% if devise_mapping.rememberable? %>
+      <div class="field field-inline">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me %>
+      </div>
+    <% end %>
+
+    <%= f.submit 'Log in', class: 'button' %>
   <% end %>
 
-  <div class='actions'>
-    <%= f.submit "Log in", class: 'btn btn-primary' %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  <%= render 'devise/shared/links' %>
+</section>

@@ -9,7 +9,6 @@ class UserController < ApplicationController
     @posts = Post.includes(:user, :likes, comments: :user).where(user_id: visible_ids).arePosts.active
     @stories = Post.includes(:user).where(user_id: visible_ids).areStories.active
     @recommended = User.where.not(id: visible_ids).order(:created_at).limit(SUGGESTION_LIMIT)
-    @comment = Comment.new
   end
 
   def profile
