@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2021_08_24_093915) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_09_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -45,6 +45,7 @@ ActiveRecord::Schema[8.1].define(version: 2021_08_24_093915) do
     t.bigint "following_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["follower_id", "following_id"], name: "index_followers_on_follower_id_and_following_id", unique: true
     t.index ["follower_id"], name: "index_followers_on_follower_id"
     t.index ["following_id"], name: "index_followers_on_following_id"
   end
@@ -55,6 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2021_08_24_093915) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -64,8 +66,8 @@ ActiveRecord::Schema[8.1].define(version: 2021_08_24_093915) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "likes_count"
-    t.integer "comments_count"
+    t.integer "likes_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
     t.string "post_type", default: "post"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
@@ -92,4 +94,12 @@ ActiveRecord::Schema[8.1].define(version: 2021_08_24_093915) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "username_gin_index", opclass: :gin_trgm_ops, using: :gin
   end
+
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
+  add_foreign_key "followers", "users", column: "follower_id"
+  add_foreign_key "followers", "users", column: "following_id"
+  add_foreign_key "likes", "posts"
+  add_foreign_key "likes", "users"
+  add_foreign_key "posts", "users"
 end

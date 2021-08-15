@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -9,10 +7,16 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :outgoing_follows, class_name: 'Follower', foreign_key: :follower_id,
+                              inverse_of: :follower, dependent: :destroy
+  has_many :incoming_follows, class_name: 'Follower', foreign_key: :following_id,
+                              inverse_of: :following, dependent: :destroy
 
-  validates :email, :username, :first_name, presence: true
-  validates :email, :username, uniqueness: true
-  validates_associated :posts
+  # Usernames appear in /profile/:username, so keep them URL-safe.
+  validates :username, presence: true, uniqueness: { case_sensitive: false },
+                       length: { maximum: 20 }, format: { with: /\A[a-zA-Z0-9_]+\z/ }
+  validates :first_name, presence: true, length: { maximum: 20 }
+  validates :last_name, length: { maximum: 20 }
 
   def full_name
     "#{first_name} #{last_name}".strip
@@ -21,14 +25,14 @@ class User < ApplicationRecord
   alias post_user full_name
 
   def total_followers
-    Follower.where(following_id: id).count
+    incoming_follows.count
   end
 
   def total_following
-    Follower.where(follower_id: id).count
+    outgoing_follows.count
   end
 
   def following?(user_id)
-    Follower.find_by(follower_id: id, following_id: user_id).present?
+    outgoing_follows.exists?(following_id: user_id)
   end
 end
