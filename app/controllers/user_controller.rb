@@ -1,5 +1,7 @@
 class UserController < ApplicationController
   before_action :authenticate_user!
 
-  def index; end
+  def index
+    @posts = current_user.posts
+  end
 end
