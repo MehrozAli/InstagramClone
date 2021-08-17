@@ -3,5 +3,19 @@
     <div class='col-8'>
       <%= render @posts%>
     </div>
+    <div class='col-4'>
+      <div class='d-flex mt-4'>
+        <%= image_tag render_profile_picture(current_user.profileImg), size: '80x80', class: 'rounded-circle' %>
+        <div class='align-self-center'>
+          <p class='m-0'><%= current_user.full_name %></p>
+          <p class='m-0 text-muted'><%= current_user.username %></p>
+        </div>
+      </div>
+
+      <div class='followers-suggestions border'>
+        <%= link_to 'Show All', '#', class: 'float-right' %>
+        <p class='text-muted'>Suggestions for you</p>
+      </div>
+    </div>
   </div>
 </div>
