@@ -3,7 +3,8 @@ class UserController < ApplicationController
   before_action :set_user, only: [:profile]
 
   def index
-    @posts = current_user.posts.active
+    @posts = current_user.posts.active.includes(:likes)
+    @recommended = User.where.not(id: current_user.id)
   end
 
   def profile

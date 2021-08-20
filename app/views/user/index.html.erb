@@ -1,7 +1,9 @@
 <div class='container'>
   <div class='row'>
     <div class='col-8'>
-      <%= render @posts%>
+      <% @posts.each do |post| %>
+        <%= render partial: 'post', object: post %>
+      <% end %>
     </div>
     <div class='col-4'>
       <div class='d-flex mt-4'>
@@ -15,6 +17,7 @@
       <div class='followers-suggestions border'>
         <%= link_to 'Show All', '#', class: 'float-right' %>
         <p class='text-muted'>Suggestions for you</p>
+        <%= render 'recommended_users' %>
       </div>
     </div>
   </div>

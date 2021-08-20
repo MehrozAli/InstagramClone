@@ -1,7 +1,7 @@
 <div class='container text-left'>
   <div class='row'>
     <div class='col-4'>
-      <%= image_tag render_profile_picture(@user.profileImg), class: 'profile-pic' %>
+      <%= image_tag render_profile_picture(@user.profileImg), class: 'profile-pic img-thumbnail' %>
     </div>
 
     <div class='col-8 align-self-center'>
@@ -9,10 +9,10 @@
       <p class='m-0'><%= @user.username %></p>
       <div class='d-flex'>
         <p class='m-0'><%= @user.posts.count %> posts</p>
-        <p class='m-0 mx-5'><%= @user.posts.count %> followers</p>
+        <p class='mb-0 mx-5'><%= @user.posts.count %> followers</p>
         <p class='m-0'><%= @user.posts.count %> following</p>
       </div>
-      <%= link_to 'Edit Profile', edit_user_registration_path, class: 'btn btn-light border mt-1' %>
+      <%= link_to 'Edit Profile', edit_user_registration_path, class: 'btn btn-light border mt-1' if can_edit_profile?(@user.id) %>
     </div>
   </div>
 
