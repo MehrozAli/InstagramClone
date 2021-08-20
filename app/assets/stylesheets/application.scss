@@ -12,10 +12,11 @@
  *
  */
 
-@import "bootstrap";
-@import "public.scss";
-@import "user.scss";
-@import "posts.scss";
+@import 'bootstrap';
+@import 'public.scss';
+@import 'user.scss';
+@import 'posts.scss';
+@import 'comments.scss';
 
 .default-bg {
   background-color: #fafafa;

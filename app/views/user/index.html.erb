@@ -2,7 +2,7 @@
   <div class='row'>
     <div class='col-8'>
       <% @posts.each do |post| %>
-        <%= render partial: 'post', object: post %>
+        <%= render partial: 'posts/post', object: post %>
       <% end %>
     </div>
     <div class='col-4'>

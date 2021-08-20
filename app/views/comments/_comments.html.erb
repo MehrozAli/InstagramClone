@@ -1,0 +1,8 @@
+<div class='comments-box'>
+  <% post.comments.each do |comment| %>
+    <p class='my-1'>
+      <strong><%= comment.user.username %>:</strong>
+      <%= comment.comment_body %>
+    </p>
+  <% end %>
+</div>

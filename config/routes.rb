@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   devise_for :users
   resources :posts, only: %i[new create] do
     get 'like', to: 'likes#like_post', as: :like, on: :member
+    resources :comments, only: [:create]
   end
 end

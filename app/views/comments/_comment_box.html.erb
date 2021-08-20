@@ -1,0 +1,11 @@
+<div class='comment-input'>
+  <%= form_for [post, @comment] do |f| %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <div class="input-group">
+      <%= f.text_field :comment_body, placeholder: 'Enter comment...', class: 'form-control' %>
+      <div class="input-group-append">
+        <%= f.submit 'Post', class: 'btn btn-outline-success btn-sm' %>
+      </div>
+    </div>
+  <% end %>
+</div>
