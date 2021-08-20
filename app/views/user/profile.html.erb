@@ -9,8 +9,8 @@
       <p class='m-0'><%= @user.username %></p>
       <div class='d-flex'>
         <p class='m-0'><%= @user.posts.count %> posts</p>
-        <p class='mb-0 mx-5'><%= @user.posts.count %> followers</p>
-        <p class='m-0'><%= @user.posts.count %> following</p>
+        <p class='mb-0 mx-5'><%= pluralize(@user.total_followers, 'follower') %></p>
+        <p class='m-0'><%= pluralize(@user.total_following, 'following') %></p>
       </div>
       <%= link_to 'Edit Profile', edit_user_registration_path, class: 'btn btn-light border mt-1' if can_edit_profile?(@user.id) %>
     </div>

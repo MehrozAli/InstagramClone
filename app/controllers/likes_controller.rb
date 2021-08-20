@@ -2,7 +2,7 @@ class LikesController < ApplicationController
   before_action :check_like_exists?, only: [:like_post]
 
   def like_post
-    @post_id = params[:post_id]
+    @post_id = params[:id]
 
     respond_to do |format|
       format.js do
@@ -16,7 +16,7 @@ class LikesController < ApplicationController
   private
 
   def check_like_exists?
-    @already_liked = Like.find_by(post_id: params[:post_id], user_id: current_user.id)
+    @already_liked = Like.find_by(post_id: params[:id], user_id: current_user.id)
   end
 
   def get_post_likes(post_id)

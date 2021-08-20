@@ -16,4 +16,12 @@ class User < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  def total_followers
+    Follower.where(following_id: id).count
+  end
+
+  def total_following
+    Follower.where(follower_id: id).count
+  end
 end

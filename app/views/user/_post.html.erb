@@ -6,11 +6,11 @@
   <%= image_tag post.image_url, class: 'img img-fluid' %>
   <div class='bg-white p-3 border text-left'>
     <div class='post-actions'>
-      <i class="<%= post_already_liked_by_user?(post) ? "fas text-danger" : "far" %> fa-heart like-icon like-<%= post.id %>" data-id="<%= post.id %>"></i>
-      <i class="far fa-comment"></i>
+      <i class='<%= post_already_liked_by_user?(post) ? 'fas text-danger' : 'far' %> fa-heart like-icon like-<%= post.id %>' data-id='<%= post.id %>'></i>
+      <i class='far fa-comment'></i>
     </div>
     <p class='m-0'>
-      <strong id="<%= post.id %>-likes">
+      <strong id='<%= post.id %>-likes'>
         <%= pluralize(post.likes_count, 'like') %>
       </strong>
     </p>

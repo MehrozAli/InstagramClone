@@ -14,7 +14,12 @@
         </p>
       </div>
 
-      <div><%= link_to 'Follow', '#', class: 'btn btn-info btn-sm' %></div>
+      <div>
+        <%= form_tag follow_user_path, method: :post do %>
+          <%= hidden_field_tag :follow_id, user.id %>
+          <%= submit_tag 'Follow', class: 'btn btn-info btn-sm' %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

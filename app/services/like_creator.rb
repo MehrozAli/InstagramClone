@@ -8,10 +8,9 @@ class LikeCreator
   def execute
     if @post.present?
       @post.destroy
-      @success = false
-    elsif Like.create!(post_id: @post_id, user_id: @current_user)
-      @success = true
+      false
+    elsif Like.create(post_id: @post_id, user_id: @current_user)
+      true
     end
-    @success
   end
 end

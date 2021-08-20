@@ -3,7 +3,7 @@ $(function() {
     let post_id = $(e.target).data("id");
 
     $.ajax({
-      url: `/post/like/${post_id}`,
+      url: `/posts/${post_id}/like`,
       method: "GET",
     })
   })
