@@ -8,3 +8,9 @@
     margin-right: 8px;
   }
 }
+
+.dropdown {
+  .dropdown-toggle::after {
+    display: none !important;
+  }
+}

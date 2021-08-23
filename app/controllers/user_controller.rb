@@ -4,7 +4,7 @@ class UserController < ApplicationController
   before_action :set_recommended_users, only: [:index]
 
   def index
-    @posts = Post.where(user_id: @following_ids).active.includes(:likes, :comments)
+    @posts = Post.includes(:likes, :comments).where(user_id: @following_ids).active
     @comment = Comment.new
   end
 
@@ -12,7 +12,11 @@ class UserController < ApplicationController
 
   def follow_user
     user_id = params[:follow_id]
-    redirect_to home_path if Follower.create!(follower_id: current_user.id, following_id: user_id)
+    if Follower.create!(follower_id: current_user.id, following_id: user_id)
+      redirect_to home_path, notice: 'Followed!'
+    else
+      redirect_to home_path, alert: 'Something went wrong!'
+    end
   end
 
   private

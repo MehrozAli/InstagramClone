@@ -20,8 +20,8 @@
     <h5>Posts:</h5>
     <div class='row'>
       <% @user_posts.each do |post| %>
-        <div class='col-12 col-sm-4 align-self-center'>
-          <%= image_tag post.image_url, class: 'img img-fluid cursor-pointer' %>
+        <div class='col-12 col-sm-4 post-square'>
+          <%= link_to image_tag(post.image_url, class: 'img img-fluid cursor-pointer'), post_path(post.id) %>
         </div>
       <% end %>
     </div>

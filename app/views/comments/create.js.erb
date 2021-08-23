@@ -1,0 +1,3 @@
+$(".comments-box").html("<%= j render 'comments', post: @post %>")
+$("#comment_comment_body").val('');
+$(".alert-box").html("<%= j render 'layouts/error_messages' %>")

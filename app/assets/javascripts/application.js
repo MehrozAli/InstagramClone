@@ -16,3 +16,9 @@
 //= require rails-ujs
 //= require activestorage
 //= require_tree .
+
+$(function() {
+  setTimeout(() => {
+    $('.alert').fadeOut();
+  }, 3000)
+})

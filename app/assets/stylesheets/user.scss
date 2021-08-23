@@ -11,6 +11,18 @@
   margin-top: 30px;
 }
 
+.post-square {
+  height: 300px;
+  width: 300px;
+  overflow: hidden;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
 .followers-suggestions {
   background-color: #fff;
   padding: 15px;

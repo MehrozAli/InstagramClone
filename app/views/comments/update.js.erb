@@ -1,0 +1,2 @@
+$("#comment-<%= @comment.id %>").text("<%= @comment.comment_body %>");
+$(".alert-box").html("<%= j render 'layouts/error_messages' %>")

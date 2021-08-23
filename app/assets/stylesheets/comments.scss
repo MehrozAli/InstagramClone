@@ -10,6 +10,10 @@
 }
 
 .comments-box {
-  max-height: 600px;
+  max-height: 200px;
   overflow-y: auto;
+
+  .comments-action a {
+    text-decoration: none;
+  }
 }
