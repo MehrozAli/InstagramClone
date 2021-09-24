@@ -10,10 +10,10 @@ class Like < ApplicationRecord
   private
 
   def increment_like_count
-    Post.find(post_id).increment(:likes_count).save
+    post.increment(:likes_count).save
   end
 
   def decrement_like_count
-    Post.find(post_id).decrement(:likes_count).save
+    post.decrement(:likes_count).save
   end
 end

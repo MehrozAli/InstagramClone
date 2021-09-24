@@ -10,13 +10,15 @@
         <%= time_ago_in_words(comment.created_at) %> ago
       </span>
     </p>
-    <div class='comment-actions'>
-      <%= link_to post_comment_path(post.id, comment.id), method: :delete, remote: true do %>
-        <i class='fas fa-trash cursor-pointer f-12 text-dark'></i>
-      <% end %>
-      <%= link_to edit_post_comment_path(post.id, comment.id), method: :get, remote: true do %>
-        <i class='fas fa-edit cursor-pointer f-12 text-dark'></i>
-      <% end %>
-    </div>
+    <% if can_alter_comment?(comment) %>
+      <div class='comment-actions'>
+        <%= link_to post_comment_path(post.id, comment.id), method: :delete, remote: true do %>
+          <i class='fas fa-trash cursor-pointer f-12 text-dark'></i>
+        <% end %>
+        <%= link_to edit_post_comment_path(post.id, comment.id), method: :get, remote: true do %>
+          <i class='fas fa-edit cursor-pointer f-12 text-dark'></i>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 <% end %>

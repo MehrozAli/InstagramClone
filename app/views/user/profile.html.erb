@@ -18,12 +18,16 @@
 
   <div class='posts-area'>
     <h5>Posts:</h5>
-    <div class='row'>
-      <% @user_posts.each do |post| %>
-        <div class='col-12 col-sm-4 post-square'>
-          <%= link_to image_tag(post.image_url, class: 'img img-fluid cursor-pointer'), post_path(post.id) %>
-        </div>
-      <% end %>
-    </div>
+    <% if private?(@user) %>
+      <p>Follow this user to see his posts.</p>
+    <% else %>
+      <div class='row'>
+        <% @user_posts.each do |post| %>
+          <div class='col-12 col-sm-4 post-square'>
+            <%= link_to image_tag(post.image_url, class: 'img img-fluid cursor-pointer'), post_path(post.id) %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

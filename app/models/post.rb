@@ -6,15 +6,15 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   belongs_to :user
 
+  delegate :post_user, to: :user
+
   validates :user, :image, presence: true
 
   scope :active, -> { where active: true }
+  scope :arePosts, -> { where post_type: 'post' }
+  scope :areStories, -> { where post_type: 'story' }
 
   def image_url
     image.url
-  end
-
-  def post_user
-    user.full_name
   end
 end

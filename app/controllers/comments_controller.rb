@@ -6,7 +6,8 @@ class CommentsController < ApplicationController
   def edit; end
 
   def create
-    if @post.comments.create(comment_params)
+    comment = @post.comments.new(comment_params)
+    if comment.save
       flash[:notice] = 'Comment created successfully'
     else
       flash[:alert] = 'Comment could not be created'

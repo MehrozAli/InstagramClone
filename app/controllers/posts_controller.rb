@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: %i[show edit update destroy]
-  before_action :authorize_post, except: %i[show create new]
+  before_action :authorize_post, except: %i[show create new add_story create_story]
 
   def show
     @comment = Comment.new
@@ -14,7 +14,9 @@ class PostsController < ApplicationController
   def edit; end
 
   def create
-    if current_user.posts.create!(post_params)
+    @post = current_user.posts.new(post_params)
+    if @post.save
+      ClearStoryJob.delay(run_at: 2.minutes.from_now).perform_later(@post.id) if @post.post_type == 'story'
       redirect_to home_path, notice: 'Post Uploaded!'
     else
       redirect_to new_post_path, alert: 'Post could not be uploaded.'
@@ -30,21 +32,26 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    if @post.destroy!
+    if @post.destroy
       redirect_to home_path, notice: 'Post deleted!'
     else
       redirect_to home_path, alert: 'Could not delete post!'
     end
   end
 
+  def add_story
+    @post = Post.new(post_type: 'story')
+    render 'new'
+  end
+
   private
 
   def post_params
-    params.require(:post).permit(:image, :image_cache)
+    params.require(:post).permit(:image, :image_cache, :post_type)
   end
 
   def set_post
-    @post = Post.includes(:comments).find(params[:id])
+    @post = Post.find(params[:id])
   end
 
   def authorize_post

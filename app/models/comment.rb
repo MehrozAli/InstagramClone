@@ -8,16 +8,16 @@ class Comment < ApplicationRecord
   after_destroy :decrement_comment_count
 
   def post_owner
-    Post.find(post_id).user_id
+    post.user_id
   end
 
   private
 
   def increment_comment_count
-    Post.find(post_id).increment(:comments_count).save
+    post.increment(:comments_count).save
   end
 
   def decrement_comment_count
-    Post.find(post_id).decrement(:comments_count).save
+    post.decrement(:comments_count).save
   end
 end

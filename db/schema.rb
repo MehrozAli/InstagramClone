@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_20_143034) do
+ActiveRecord::Schema.define(version: 2021_08_24_093915) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
@@ -23,6 +24,21 @@ ActiveRecord::Schema.define(version: 2021_08_20_143034) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "followers", force: :cascade do |t|
@@ -51,6 +67,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_143034) do
     t.datetime "updated_at", null: false
     t.integer "likes_count"
     t.integer "comments_count"
+    t.string "post_type", default: "post"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -71,8 +88,10 @@ ActiveRecord::Schema.define(version: 2021_08_20_143034) do
     t.string "last_name", limit: 20
     t.string "username", limit: 20
     t.string "profileImg"
+    t.boolean "isPrivate", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "username_gin_index", opclass: :gin_trgm_ops, using: :gin
   end
 
 end
