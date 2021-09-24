@@ -17,4 +17,8 @@ class ApplicationController < ActionController::Base
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || home_path)
   end
+
+  def render_not_found
+    render file: "#{Rails.root}/public/404.html", status: 404
+  end
 end

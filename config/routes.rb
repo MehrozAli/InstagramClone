@@ -8,4 +8,5 @@ Rails.application.routes.draw do
     get 'like', to: 'likes#like_post', as: :like, on: :member
     resources :comments, only: %i[create destroy edit update]
   end
+  get '*path', to: 'public#render_404'
 end
